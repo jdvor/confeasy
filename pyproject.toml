@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "confeasy"
 version = "0.0.1"
-description = "Lorem ipsum dolor sit."
+description = "Application configuration inspired by Microsoft.Extensions.Configuration (.NET)."
 authors = ["jan Dvorak <jandvorak.public@gmail.com>"]
 readme = "README.md"
+keywords = ["configuration", "json", "environment variables", "command line"]
+license = "MIT"
 packages = [
   { include = "confeasy" },
 ]
@@ -14,11 +16,13 @@ python = "^3.13"
 [tool.poetry.group.dev.dependencies]
 bandit = { version = "^1.7.10", extras = ["toml"] }
 bumpver = "^2023.1129"
+coverage = { version = "^7.6.4", extras = ["toml"] }
 mypy = "^1.13.0"
 pip-audit = "^2.7.3"
 poethepoet = "^0.26.1"
 pydocstyle = { version = "^6.3.0", extras = ["toml"] }
 pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
 python-dotenv = "^1.0.1"
 ruff = "^0.4.4"
 types-requests = "^2.32.0.20241016"
@@ -40,16 +44,44 @@ warn_unused_ignores = true
 
 [tool.pytest.ini_options]
 cache_dir = ".cache/pytest/"
+pythonpath = [
+  "confeasy/",
+]
 testpaths = [
   "tests/",
 ]
 addopts = [
+  "--cov=confeasy",
+  "--cov-fail-under=70",
+  "--cov-report=term-missing:skip-covered",
+  "--no-cov-on-fail",
   "-ra",
+  "--no-header",
   "--capture=no",
+  "--strict-markers",
 ]
 markers = [
   "slow: Slow tests",
-  "sideeffect: Side effects may occur by running the tests",
+  "integration: Integration tests using real external resources, so they may require infrastructure setup",
+]
+
+# https://coverage.readthedocs.io/en/latest/config.html
+[tool.coverage.run]
+branch = true
+data_file = ".cache/coverage"
+omit = [
+  ".venv/*",
+  "tests/*",
+  "*/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "@overload",
+  "raise NotImplementedError",
+  "except DistributionNotFound",
+  "TYPE_CHECKING",
 ]
 
 [tool.ruff]
@@ -125,12 +157,12 @@ help = "Format the code"
 cmd = "ruff format ."
 
 [tool.poe.tasks.test]
-help = "Run unit tests skipping slow tests or tests with side effects."
-cmd  = "pytest --no-header -m 'not slow and not sideeffect'"
+help = "Run unit tests skipping slow and integration tests."
+cmd  = "pytest -m 'not slow and not integration'"
 
 [tool.poe.tasks.citest]
-help = "Run unit tests in CI pipeline (creates file test-report-junit.xml)"
-cmd  = "pytest --no-header --junit-xml=test-report-junit.xml"
+help = "Run all unit tests in CI pipeline (creates file test-report-junit.xml)"
+cmd  = "pytest --junit-xml=test-report-junit.xml"
 
 [tool.poe.tasks.type]
 help = "Check typing hints"
@@ -156,6 +188,10 @@ cmd  = "pydocstyle --config=pyproject.toml confeasy"
 help = "Check code security"
 sequence = ["bandit -r confeasy", "pip-audit --progress-spinner off"]
 default_item_type = "cmd"
+
+[tool.poe.tasks.bumpver]
+help = "Update semantic version"
+cmd  = "bumpver update"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
