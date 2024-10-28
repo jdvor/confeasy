@@ -14,13 +14,12 @@ on:
 env:
   PYTHON_VERSION: '3.13'
   POETRY_VERSION: '1.8.4'
-  OS: 'ubuntu-latest'
 
 jobs:
   tests:
     name: 'Run Tests'
 
-    runs-on: ${{ env.OS }}
+    runs-on: ubuntu-latest
 
     steps:
 
