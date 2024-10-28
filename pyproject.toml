@@ -54,7 +54,6 @@ addopts = [
   "--cov=confeasy",
   "--cov-fail-under=70",
   "--cov-report=term-missing:skip-covered",
-  "--no-cov-on-fail",
   "-ra",
   "--no-header",
   "--capture=no",
