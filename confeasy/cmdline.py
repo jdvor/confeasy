@@ -1,10 +1,9 @@
 """Module containing command line arguments configuration source."""
 
+from confeasy import SNAKE_CASE_REPLACE_PATTERN
 import re
 import sys
 
-
-SNAKE_CASE_REPLACE_PATTERN = re.compile(r"(?<!^)(?=[A-Z][a-z]|[A-Z](?=[A-Z][a-z]|$))")
 TWO_OR_MORE_UNDERSCORES_PATTERN = re.compile(r"_{2,}")
 
 

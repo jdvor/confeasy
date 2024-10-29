@@ -32,6 +32,7 @@ class DbOptions:
 
 from confeasy import Builder
 from confeasy.jsonfile import JsonFile
+from confeasy.tomlfile import TomlFile
 from confeasy.envars import EnvironmentVariables
 from confeasy.cmdline import CommandLine
 
@@ -40,7 +41,9 @@ builder = (Builder()
            .add_source(JsonFile()
                        .required("settings.json")
                        .optional("setting.local.json"))
-           .add_source(EnvironmentVariables(prefix="MYAPP_"))
+           .add_source(TomlFile()
+                       .optional("other_settings.toml"))
+           .add_source(EnvironmentVariables("MYAPP_"))
            .add_source(CommandLine()))
 
 config = builder.build()
@@ -55,6 +58,8 @@ db_conn_str = config.get_value("db.connection_string")
 ## Out-of-the-box configuration sources
 
 * JSON files
+* TOML files
+* INI files
 * command line arguments
 * environment variables
 
@@ -66,13 +71,8 @@ db_conn_str = config.get_value("db.connection_string")
 
 For developer related information, check [Developer Guide](developer.md).
 
-Near future:
-* Support for TOML files using `tomllib` from standard library.
-
-Never:
+**Note:**
 * YAML files will not be supported unless a parsing module is available in the standard library.
-* INI files will not be supported, as they are not well-suited for handling hierarchical structures
-  that application configuration often evolve towards.
 
 
 [azure]: https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview

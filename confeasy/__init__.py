@@ -11,6 +11,7 @@ __version__ = "0.0.1"
 T = TypeVar("T")
 VALID_KEY_PATTERN = re.compile(r"^[a-z]+(\.[a-z_]+)*$")
 MAX_BIND_DEPTH = 5
+SNAKE_CASE_REPLACE_PATTERN = re.compile(r"(?<!^)(?=[A-Z][a-z]|[A-Z](?=[A-Z][a-z]|$))")
 
 
 class Source(Protocol):

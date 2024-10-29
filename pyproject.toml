@@ -188,8 +188,8 @@ help = "Check code security"
 sequence = ["bandit -r confeasy", "pip-audit --progress-spinner off"]
 default_item_type = "cmd"
 
-[tool.poe.tasks.bumpver]
-help = "Update semantic version"
+[tool.poe.tasks.version_and_push]
+help = "Update semantic version, create git tag and push everything to remote (both changes and the tag)"
 cmd  = "bumpver update"
 
 [build-system]

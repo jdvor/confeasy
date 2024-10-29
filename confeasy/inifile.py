@@ -1,32 +1,38 @@
-"""Module containing JSON files configuration source."""
+"""Module containing INI files configuration source."""
 
 from __future__ import annotations
 
-from confeasy import SNAKE_CASE_REPLACE_PATTERN
-import json
+from configparser import ConfigParser
 from pathlib import Path
+from confeasy import SNAKE_CASE_REPLACE_PATTERN
 
 
-class JsonFile:
-    """JSON files configuration source."""
+class IniFile:
+    """
+    INI files configuration source.
+
+    If you use $root as the name of a section in an INI file, the keys under the $root section will be treated
+    as though they have no section at all (meaning the prefix "$root." will be stripped from their names).
+    This approach emulates configurations in other sources where keys can exist at the root level.
+    """
 
     def __init__(self, base_dir: str | None = None):
         """
-        :param base_dir: unless absolute path is defined for a JSON file,
+        :param base_dir: unless absolute path is defined for a INI file,
         this is where the relative paths will be looked for.
         If no base_dir is passed, then current working directory is assumed.
         """
         self._base_dir: Path = Path.cwd() if base_dir is None else Path(base_dir)
         self._files: list[tuple[str, bool]] = []
 
-    def optional(self, path: str) -> JsonFile:
-        """Define optional JSON file. If the path does not exist it is silently ignored."""
+    def optional(self, path: str) -> IniFile:
+        """Define optional INI file. If the path does not exist it is silently ignored."""
         self._files.append((path, False))
         return self
 
-    def required(self, path: str) -> JsonFile:
+    def required(self, path: str) -> IniFile:
         """
-        Define required JSON file.
+        Define required INI file.
 
         :raises ValueError: if the path does not exist.
         """
@@ -48,21 +54,14 @@ class JsonFile:
                     raise ValueError(f"configuration file {path} does not exist")
                 continue
 
-            with Path.open(path) as file:
-                js = json.load(file)
-                flat = _flatten_json(js)
-                result.update(flat)
+            config = ConfigParser()
+            config.optionxform = str
+            config.read(path)
+
+            for section in config.sections():
+                for k, v in config.items(section):
+                    key = f"{section}.{k}" if section != "$root" else k
+                    key = SNAKE_CASE_REPLACE_PATTERN.sub("_", key).lower()
+                    result[key] = v
 
         return result
-
-
-def _flatten_json(js: dict, parent: str = "") -> dict[str, str | int | float | bool]:
-    result: dict[str, str | int | float | bool] = {}
-    for k, v in js.items():
-        key = f"{parent}.{k}" if parent else k
-        if isinstance(v, dict):
-            result.update(_flatten_json(v, key))
-        else:
-            key = SNAKE_CASE_REPLACE_PATTERN.sub("_", key).lower()
-            result[key] = v
-    return result

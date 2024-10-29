@@ -58,7 +58,7 @@ poetry run poe test
 ```
 
 ```shell
-poetry run poe bumpver
+poetry run poe version_and_push [ --major | --minor | --patch ] [ --tag-name-suffix "rc" ]
 ```
 
 ```shell
