@@ -6,7 +6,7 @@ import re
 from typing import Any, Protocol, TypeVar
 
 
-__version__ = "0.0.1"
+__version__ = "1.0.0"
 
 T = TypeVar("T")
 VALID_KEY_PATTERN = re.compile(r"^[a-z]+(\.[a-z_]+)*$")

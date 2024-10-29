@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "confeasy"
-version = "0.0.1"
+version = "1.0.0"
 description = "Application configuration inspired by Microsoft.Extensions.Configuration (.NET)."
 authors = ["jan Dvorak <jandvorak.public@gmail.com>"]
 readme = "README.md"
