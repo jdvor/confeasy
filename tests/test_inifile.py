@@ -10,7 +10,7 @@ def test_ini_file():
     assert len(actual) == 4
     assert "alpha_horse" in actual
     assert "omega_fox" in actual
-    assert actual["beta.gamma_goat"] == '10'
+    assert actual["beta.gamma_goat"] == "10"
 
 
 def test_ini_file_when_required_is_missing():

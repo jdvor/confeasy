@@ -11,7 +11,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
 bandit = { version = "^1.7.10", extras = ["toml"] }
@@ -29,7 +29,7 @@ types-requests = "^2.32.0.20241016"
 
 [tool.mypy]
 exclude = '^tests/'
-python_version = "3.13"
+python_version = "3.12"
 cache_dir = ".cache/mypy/"
 check_untyped_defs = true
 disallow_incomplete_defs = true
@@ -87,10 +87,13 @@ exclude_lines = [
 cache-dir = ".cache/ruff"
 line-length = 120
 output-format = "grouped"
-target-version = "py313"
+target-version = "py312"
 
 [tool.ruff.lint]
-ignore = ["E501"]
+ignore = [
+  "E501",    # line-too-long
+  "PTH123",  # `open()` should be replaced by `Path.open()`
+]
 select = [
   "A",    # flake8-builtins
   "ARG",  # flake8-unused-arguments

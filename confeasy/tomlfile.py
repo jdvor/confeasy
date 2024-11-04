@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from confeasy import SNAKE_CASE_REPLACE_PATTERN
 from pathlib import Path
 import tomllib
+
+from confeasy import SNAKE_CASE_REPLACE_PATTERN
 
 
 class TomlFile:
@@ -55,7 +56,8 @@ class TomlFile:
 
         return result
 
-def _flatten_dict(d: dict, parent = "") -> dict[str, str | int | float | bool]:
+
+def _flatten_dict(d: dict, parent: str = "") -> dict[str, str | int | float | bool]:
     result: dict[str, str | int | float | bool] = {}
     for k, v in d.items():
         key = f"{parent}.{k}" if parent else k

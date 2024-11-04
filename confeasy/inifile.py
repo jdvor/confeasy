@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from configparser import ConfigParser
 from pathlib import Path
+
 from confeasy import SNAKE_CASE_REPLACE_PATTERN
 
 
@@ -44,7 +45,7 @@ class IniFile:
         Get data which should be merged into configuration.
         The keys should follow the required pattern - see documentation in developer.md.
         """
-        result = {}
+        result: dict[str, str | int | float | bool] = {}
         for path_str, is_required in self._files:
             path = Path(path_str)
             path = path if path.is_absolute() else self._base_dir / path
@@ -55,7 +56,8 @@ class IniFile:
                 continue
 
             config = ConfigParser()
-            config.optionxform = str
+            # The following line allows the casing of the keys remain as in the original source (file).
+            config.optionxform = str  # type: ignore[method-assign, assignment]
             config.read(path)
 
             for section in config.sections():

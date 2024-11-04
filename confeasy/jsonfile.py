@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from confeasy import SNAKE_CASE_REPLACE_PATTERN
 import json
 from pathlib import Path
+
+from confeasy import SNAKE_CASE_REPLACE_PATTERN
 
 
 class JsonFile:

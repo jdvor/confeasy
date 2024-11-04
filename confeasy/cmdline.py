@@ -1,8 +1,10 @@
 """Module containing command line arguments configuration source."""
 
-from confeasy import SNAKE_CASE_REPLACE_PATTERN
 import re
 import sys
+
+from confeasy import SNAKE_CASE_REPLACE_PATTERN
+
 
 TWO_OR_MORE_UNDERSCORES_PATTERN = re.compile(r"_{2,}")
 
