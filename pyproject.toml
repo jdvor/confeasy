@@ -5,10 +5,14 @@ description = "Application configuration inspired by Microsoft.Extensions.Config
 authors = ["jan Dvorak <jandvorak.public@gmail.com>"]
 readme = "README.md"
 keywords = ["configuration", "json", "environment variables", "command line"]
+repository = "https://github.com/jdvor/confeasy"
 license = "MIT"
 packages = [
   { include = "confeasy" },
 ]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/jdvor/confeasy/issues"
 
 [tool.poetry.dependencies]
 python = "^3.12"
